@@ -44,5 +44,8 @@
     "eslint-config-google": "^0.7.1",
     "jest": "^18.1.0",
     "nodemon": "^1.11.0"
+  },
+  "jest": {
+    "testPathIgnorePatterns":["node_modules", "lib"]
   }
 }
