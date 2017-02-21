@@ -36,6 +36,7 @@
     "babel-cli": "^6.23.0",
     "babel-jest": "^18.0.0",
     "babel-plugin-transform-runtime": "^6.23.0",
+    "babel-preset-env": "^1.1.8",
     "eslint": "^3.16.0",
     "eslint-config-google": "^0.7.1",
     "jest": "^18.1.0",
