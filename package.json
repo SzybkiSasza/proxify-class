@@ -7,7 +7,7 @@
     "babel": "babel src -d lib",
     "coverage": "jest --coverage",
     "codacy": "npm fun coverage && cat ./coverage/lcov.info | codacy-coverage && rm -rf ./coverage",
-    "lint": "eslint --fix --format=eslint-formatter-pretty src test",
+    "lint": "eslint --fix --format=./node_modules/eslint-formatter-pretty src test",
     "prepublish": "npm run babel",
     "start": "nodemon --exec babel-node lib/index.js",
     "test": "jest"
