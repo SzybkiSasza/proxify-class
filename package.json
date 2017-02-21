@@ -9,7 +9,7 @@
     "codacy": "npm run coverage && cat ./coverage/lcov.info | codacy-coverage && rm -rf ./coverage",
     "lint": "eslint --fix src test",
     "prepublish": "npm run babel",
-    "start": "nodemon --exec babel-node lib/index.js",
+    "start": "nodemon --exec babel-node src/index.js",
     "test": "jest"
   },
   "repository": {
