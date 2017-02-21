@@ -4,9 +4,9 @@
  * @return {Function|Object}          Proxified object
  */
 export default function proxify(input) {
-  if (input instanceof Object) {
+  if (input instanceof Function) {
     return input;
-  } else if (input instanceof Function) {
+  } else if (input instanceof Object) {
     return input;
   }
 }
