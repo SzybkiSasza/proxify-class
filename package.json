@@ -6,6 +6,7 @@
   "scripts": {
     "babel": "babel src -d lib",
     "coverage": "jest --coverage",
+    "codacy": "npm fun coverage && cat ./coverage/lcov.info | codacy-coverage && rm -rf ./coverage",
     "lint": "eslint --fix --format=eslint-formatter-pretty src test",
     "prepublish": "npm run babel",
     "start": "nodemon --exec babel-node lib/index.js",
@@ -34,9 +35,11 @@
   },
   "devDependencies": {
     "babel-cli": "^6.23.0",
+    "babel-eslint": "^7.1.1",
     "babel-jest": "^18.0.0",
     "babel-plugin-transform-runtime": "^6.23.0",
     "babel-preset-env": "^1.1.8",
+    "codacy-coverage": "^2.0.1",
     "eslint": "^3.16.0",
     "eslint-config-google": "^0.7.1",
     "jest": "^18.1.0",
