@@ -1,7 +1,7 @@
 {
   "name": "proxify-class",
   "version": "0.1.0",
-  "description": "Proxifies class methods",
+  "description": "Proxifies class methods or single function",
   "main": "lib/index.js",
   "scripts": {
     "babel": "babel src -d lib --ignore test.js",
@@ -34,15 +34,15 @@
     "babel-runtime": "^6.23.0"
   },
   "devDependencies": {
-    "babel-cli": "^6.23.0",
-    "babel-eslint": "^7.1.1",
-    "babel-jest": "^18.0.0",
+    "babel-cli": "^6.24.1",
+    "babel-eslint": "^7.2.3",
+    "babel-jest": "^20.0.1",
     "babel-plugin-transform-runtime": "^6.23.0",
-    "babel-preset-env": "^1.1.8",
-    "codacy-coverage": "^2.0.1",
-    "eslint": "^3.16.0",
+    "babel-preset-env": "^1.4.0",
+    "codacy-coverage": "^2.0.2",
+    "eslint": "^3.19.0",
     "eslint-config-google": "^0.7.1",
-    "jest": "^18.1.0",
+    "jest": "^20.0.1",
     "nodemon": "^1.11.0"
   },
   "jest": {
