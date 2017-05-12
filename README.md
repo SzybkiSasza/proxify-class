@@ -29,6 +29,8 @@ Proxify exposes two methods:
 
 Proxifying a single method is rather straightforward. All that has to be done is to pass a modifier function that has the same signature as the original function (will be called with exactly the same parameters). Modifier function has to return all the processed parameters as an array so they can be passed to an original function.
 
+Modifier function should take a form of `modifier(...args) => Array`.
+
 *Please note!* Modifying original arguments passed to a modifier function is a bad practice (immutability for the win!). The recommended approach is to return new list of arguments after processing original ones.
 
 ## Proxifying the class/object
@@ -37,10 +39,12 @@ Proxifying a single method is rather straightforward. All that has to be done is
 
 As only some of the methods might need to be proxified in specific cases, optional `decide` function can be passed to `proxifyClass` to statically choose which class methods should be modified, based on their names.
 
-## Decider function
+Under the hood, `proxifyClass` calls `proxifyFunction` for every class method that should be proxified.
 
-Function has a following signature: // TODO
+### Decider function - `decide(methodName) => Boolean`
 
-## Modifier function
+Decider has a simple purpose - to determine which class methods should be proxified, based on their names. This function is ran statically once on initial proxifying. It should return `true` for every method that should be proxified and any `falsy` value for the ones that should be left untouched.
 
-Function has a following signature: // TODO
+### Modifier function - `modifier(...args) => Array`
+
+Modifier function takes all the original arguments of a proxified method, clones and modifies them and returns as an elements of the array, so the original method can be called with them.
