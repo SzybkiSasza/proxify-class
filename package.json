@@ -31,7 +31,8 @@
   },
   "homepage": "https://github.com/SzybkiSasza/proxify-class#readme",
   "dependencies": {
-    "babel-runtime": "^6.23.0"
+    "babel-runtime": "^6.23.0",
+    "lodash": "^4.17.4"
   },
   "devDependencies": {
     "babel-cli": "^6.24.1",
@@ -46,6 +47,9 @@
     "nodemon": "^1.11.0"
   },
   "jest": {
-    "testPathIgnorePatterns":["node_modules", "lib"]
+    "testPathIgnorePatterns": [
+      "node_modules",
+      "lib"
+    ]
   }
 }
