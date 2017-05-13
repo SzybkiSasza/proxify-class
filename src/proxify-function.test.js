@@ -40,16 +40,16 @@ describe('Proxify function', () => {
     });
   });
 
-  // We must run exactly the same tests two times for a different input parameter
+  // We must run exactly the same tests two times for Proxy/non-Proxy scenarios
   const getProxyTests = [{
     title: 'Proxify function - Proxy version',
-    getProxyBehaviour: () => getProxy.mockReturnValue(Proxy)
+    getProxyBehaviour: () => getProxy.mockReturnValue(Proxy),
   }, {
     title: 'Proxify function - non-Proxy version',
-    getProxyBehaviour: () => getProxy.mockReturnValue(false)
+    getProxyBehaviour: () => getProxy.mockReturnValue(false),
   }];
 
-  getProxyTests.forEach(proxyTest => {
+  getProxyTests.forEach((proxyTest) => {
     describe(proxyTest.title, () => {
       beforeAll(() => {
         proxyTest.getProxyBehaviour();
@@ -64,8 +64,10 @@ describe('Proxify function', () => {
       });
 
       it('Throws an error if modifier returns non-array-like arguments', () => {
-        const original = argument => argument;
-        const modifier = argument => !argument; // This should be an Array-like object!
+        const original = (argument) => argument;
+
+        // This should be an Array-like object!
+        const modifier = (argument) => !argument;
 
         const proxified = proxifyFunction(original, modifier);
         try {
@@ -77,8 +79,8 @@ describe('Proxify function', () => {
       });
 
       it('Modifies the passed argument in proxified function', () => {
-        const original = input => input + 1;
-        const modifier = input => [input + 2];
+        const original = (input) => input + 1;
+        const modifier = (input) => [input + 2];
 
         const proxified = proxifyFunction(original, modifier);
         const result = proxified(2); // 2 + 1 + 2 = 5;

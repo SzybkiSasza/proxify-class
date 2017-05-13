@@ -3,7 +3,7 @@ import proxifyFunction from './proxify-function';
 
 export default {
   proxifyClass,
-  proxifyFunction
+  proxifyFunction,
 };
 
 export {proxifyClass, proxifyFunction};

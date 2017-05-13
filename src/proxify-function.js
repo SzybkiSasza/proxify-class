@@ -1,9 +1,11 @@
+/* eslint-disable no-invalid-this */
+
 import getProxy from './get-proxy';
 
 /**
  * Proxifies a single function. Calls modifier for every functio invocation
  * @param  {Function} originalFunction   Original function to proxify
- * @param  {Function} modifier           Modifier to call before each function invocation
+ * @param  {Function} modifier           Modifier to call before each invocation
  * @return {Function}                    Proxified function
  */
 export function proxifyFunction(originalFunction, modifier) {
@@ -24,13 +26,13 @@ export function proxifyFunction(originalFunction, modifier) {
         const modifiedArguments = getModifiedArguments(
           modifier, thisArg, argumentsList);
         return originalFunction.apply(thisArg, modifiedArguments);
-      }
+      },
     });
   }
 
   // Fallback for environments not supporting Proxy
-  return function() {
-    const modifiedArguments = getModifiedArguments(modifier, this, arguments);
+  return function(...args) {
+    const modifiedArguments = getModifiedArguments(modifier, this, args);
     return originalFunction.apply(this, modifiedArguments);
   };
 }

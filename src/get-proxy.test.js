@@ -11,7 +11,7 @@ describe('Proxy getter', () => {
     Object.defineProperty(global, 'Proxy', {
       get: function() {
         throw new Error('Proxy is undefined');
-      }
+      },
     });
 
     const proxy = getProxy();
