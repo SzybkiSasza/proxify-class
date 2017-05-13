@@ -14,9 +14,9 @@ export function proxifyFunction(originalFunction, modifier) {
  */
 export function getProxy() {
   try {
-    const proxy = Proxy;
-    return proxy;
-  } catch (err) { // Proxy not available
+    // Does not matter if it's attached to 'global' or 'window' ;)
+    return Proxy;
+  } catch (err) {
     return false;
   }
 }
