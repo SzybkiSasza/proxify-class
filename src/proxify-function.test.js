@@ -1,35 +1,20 @@
-import {proxifyFunction, getProxy} from './proxify-function';
+jest.mock('./get-proxy');
+
+import proxifyFunction from './proxify-function';
+import getProxy from './get-proxy';
 
 describe('Proxify function', () => {
   it('Is a defined export', () => {
     expect(proxifyFunction).toBeInstanceOf(Function);
   });
 
-  describe('Proxy getter', () => {
-    it('Gets the Proxy, if available', () => {
-      const proxy = getProxy();
-      expect(proxy).toBeInstanceOf(Function);
-    });
+  describe('Proxify function - arguments checks', () => {
+    // Please note - "Not Reached" errors are to check whether
+    // the error is thrown from the library in every case
 
-    it('Returns false, if proxy is unavailable', () => {
-      // Mock getter on global, to simulate getting undefined property
-      Object.defineProperty(global, 'Proxy', {
-        get: function() {
-          throw new Error('Proxy is undefined');
-        }
-      });
-
-      const proxy = getProxy();
-      expect(proxy).toEqual(false);
-    });
-  });
-
-  describe('Proxify function', () => {
     it('Throws an error if original function is not a function', () => {
       try {
         proxifyFunction({}, {});
-
-        // In order to terminate try and always trigger catch, this line exists...
         throw new Error('This is not reached');
       } catch (err) {
         expect(err.message).toEqual('Original Function must be a function!');
@@ -39,8 +24,6 @@ describe('Proxify function', () => {
     it('Throws an error when modifier is missing', () => {
       try {
         proxifyFunction(() => {});
-
-        // In order to terminate try and always trigger catch, this line exists...
         throw new Error('This is not reached');
       } catch (err) {
         expect(err.message).toEqual('Modifier must be a function!');
@@ -50,12 +33,35 @@ describe('Proxify function', () => {
     it('Throws an error when modifier is not a function', () => {
       try {
         proxifyFunction(() => {}, {});
-
-        // In order to terminate try and always trigger catch, this line exists...
         throw new Error('This is not reached');
       } catch (err) {
         expect(err.message).toEqual('Modifier must be a function!');
       }
+    });
+  });
+
+  // An idea how to run exactly the same set of tests for two cases
+  const getProxyTests = [{
+    title: 'Proxify function - Proxy version',
+    getProxyBehaviour: () => getProxy.mockReturnValue(Proxy)
+  }, {
+    title: 'Proxify function - non-Proxy version',
+    getProxyBehaviour: () => getProxy.mockReturnValue(false)
+  }];
+
+  getProxyTests.forEach(proxyTest => {
+    describe(proxyTest.title, () => {
+      beforeAll(() => {
+        proxyTest.getProxyBehaviour();
+      });
+
+      it('Returns new function', () => {
+        const original = () => {};
+        const modifier = () => {};
+
+        const proxified = proxifyFunction(original, modifier);
+        expect(original).not.toEqual(proxified);
+      });
     });
   });
 });

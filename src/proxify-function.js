@@ -1,3 +1,5 @@
+import getProxy from './get-proxy';
+
 /**
  * Proxifies a single function. Calls modifier for every functio invocation
  * @param  {Function} originalFunction   Original function to proxify
@@ -30,19 +32,6 @@ export function proxifyFunction(originalFunction, modifier) {
     const modifiedArguments = modifier.apply(this, arguments);
     return originalFunction.apply(this, modifiedArguments);
   };
-}
-
-/**
- * Gets proxy object if available
- * @return {Object|Boolean}   Proxy object, if available or false, if not
- */
-export function getProxy() {
-  try {
-    // Does not matter if it's attached to 'global' or 'window' ;)
-    return Proxy;
-  } catch (err) {
-    return false;
-  }
 }
 
 export default proxifyFunction;
