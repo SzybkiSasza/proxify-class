@@ -1,2 +1,9 @@
-export * from './proxify-function';
-export * from './proxify-class';
+import proxifyClass from './proxify-class';
+import proxifyFunction from './proxify-function';
+
+export default {
+  proxifyClass,
+  proxifyFunction
+};
+
+export {proxifyClass, proxifyFunction};
