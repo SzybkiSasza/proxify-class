@@ -25,9 +25,9 @@ Proxify exposes two methods:
   - `proxifyClass` for profixying all the class methods
   - `proxifyFunction` for proxifying single function
 
-## Proxifying a single method
+## Proxifying a single method - `proxify(originalFunction, modifier) => Function`
 
-Proxifying a single method is rather straightforward. All that has to be done is to pass a modifier function that has the same signature as the original function (will be called with exactly the same parameters). Modifier function has to return all the processed parameters as an array so they can be passed to an original function.
+Proxifying a single method is rather straightforward. All that has to be done is to pass a modifier function that has the same signature as the original function (will be called with exactly the same parameters) and an original function. Modifier function has to return all the processed parameters as an array so they can be passed to an original function.
 
 Modifier function should take a form of `modifier(...args) => Array`.
 
