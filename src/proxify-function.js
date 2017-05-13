@@ -5,6 +5,14 @@
  * @return {Function}                    Proxified function
  */
 export function proxifyFunction(originalFunction, modifier) {
+  if (!(originalFunction instanceof Function)) {
+    throw new Error('Original Function must be a function!');
+  }
+
+  if (!(modifier instanceof Function)) {
+    throw new Error('Modifier must be a function!');
+  }
+
   // Thanks to variable scoping, this works exactly as expected ;)
   const Proxy = getProxy();
 
