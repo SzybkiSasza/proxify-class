@@ -5,7 +5,23 @@
  * @return {Function}                    Proxified function
  */
 export function proxifyFunction(originalFunction, modifier) {
+  // Thanks to variable scoping, this works exactly as expected ;)
+  const Proxy = getProxy();
 
+  if (Proxy) {
+    return new Proxy(originalFunction, {
+      async apply(target, thisArg, argumentsList) {
+        const modifiedArguments = modifier.apply(thisArg, argumentsList);
+        return originalFunction.apply(thisArg, modifiedArguments);
+      }
+    });
+  }
+
+  // Fallback for environments not supporting Proxy
+  return function() {
+    const modifiedArguments = modifier.apply(this, arguments);
+    return originalFunction.apply(this, modifiedArguments);
+  };
 }
 
 /**
