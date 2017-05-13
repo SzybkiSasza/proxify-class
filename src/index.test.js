@@ -1,15 +1,23 @@
-import proxify from './';
+jest.mock('./proxify-class');
+jest.mock('./proxify-function');
+
+import index from './';
+import {proxifyClass, proxifyFunction} from './index';
+
+const indexRequire = require('./');
 
 describe('Main lib tests', () => {
-  it('Is a defined function', () => {
-    expect(proxify).toBeInstanceOf(Function);
+  it('Exposes default export', () => {
+    expect(Object.keys(index)).toEqual(['proxifyClass', 'proxifyFunction']);
   });
 
-  it('Returns an object if supplied with object', () => {
-    expect(proxify({})).toBeInstanceOf(Object);
+  it('Exposes two functions', () => {
+    expect(proxifyClass).toBeInstanceOf(Function);
+    expect(proxifyFunction).toBeInstanceOf(Function);
   });
 
-  it('Returns a function if supplied with function', () => {
-    expect(proxify(() => {})).toBeInstanceOf(Function);
+  it('Exposes conventional require-compatible library', () => {
+    expect(indexRequire.proxifyClass).toBeInstanceOf(Function);
+    expect(indexRequire.proxifyFunction).toBeInstanceOf(Function);
   });
 });

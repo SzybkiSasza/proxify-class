@@ -1,3 +1,3 @@
-export function proxifyClass() {
-  
+export default function proxifyClass() {
+
 }
