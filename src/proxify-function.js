@@ -20,8 +20,9 @@ export function proxifyFunction(originalFunction, modifier) {
 
   if (Proxy) {
     return new Proxy(originalFunction, {
-      async apply(target, thisArg, argumentsList) {
-        const modifiedArguments = modifier.apply(thisArg, argumentsList);
+      apply(target, thisArg, argumentsList) {
+        const modifiedArguments = getModifiedArguments(
+          modifier, thisArg, argumentsList);
         return originalFunction.apply(thisArg, modifiedArguments);
       }
     });
@@ -29,9 +30,27 @@ export function proxifyFunction(originalFunction, modifier) {
 
   // Fallback for environments not supporting Proxy
   return function() {
-    const modifiedArguments = modifier.apply(this, arguments);
+    const modifiedArguments = getModifiedArguments(modifier, this, arguments);
     return originalFunction.apply(this, modifiedArguments);
   };
 }
 
 export default proxifyFunction;
+
+/**
+ * Gets modified arguments from the modifier and checks if they are Array
+ * If they are not, throws an understandable error
+ * @param  {Function} modifier      Modifier function
+ * @param  {Object} thisArg         "This" context
+ * @param  {Array} argumentsList    Input arguments list
+ * @return {Array}                  Modified arguments
+ */
+function getModifiedArguments(modifier, thisArg, argumentsList) {
+  const modifiedArguments = modifier.apply(thisArg, argumentsList);
+
+  if (!(modifiedArguments instanceof Array)) {
+    throw new Error('Modifier returned non-array arguments!');
+  }
+
+  return modifiedArguments;
+}
