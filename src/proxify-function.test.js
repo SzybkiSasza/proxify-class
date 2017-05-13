@@ -40,7 +40,7 @@ describe('Proxify function', () => {
     });
   });
 
-  // An idea how to run exactly the same set of tests for two cases
+  // We must run exactly the same tests two times for a different input parameter
   const getProxyTests = [{
     title: 'Proxify function - Proxy version',
     getProxyBehaviour: () => getProxy.mockReturnValue(Proxy)
@@ -61,6 +61,39 @@ describe('Proxify function', () => {
 
         const proxified = proxifyFunction(original, modifier);
         expect(original).not.toEqual(proxified);
+      });
+
+      it('Throws an error if modifier returns non-array-like arguments', () => {
+        const original = argument => argument;
+        const modifier = argument => !argument; // This should be an Array-like object!
+
+        const proxified = proxifyFunction(original, modifier);
+        try {
+          proxified(true);
+          throw new Error('This is not reached');
+        } catch (err) {
+          expect(err.message).toEqual('Modifier returned non-array arguments!');
+        }
+      });
+
+      it('Modifies the passed argument in proxified function', () => {
+        const original = input => input + 1;
+        const modifier = input => [input + 2];
+
+        const proxified = proxifyFunction(original, modifier);
+        const result = proxified(2); // 2 + 1 + 2 = 5;
+
+        expect(result).toEqual(5);
+      });
+
+      it('Supports multiple arguments', () => {
+        const original = (a, b) => a + b;
+        const modifier = (a, b) => [a * 2, b * 3];
+
+        const proxified = proxifyFunction(original, modifier);
+        const result = proxified(1, 2); // (1 * 2) + (2 * 3) = 8;
+
+        expect(result).toEqual(8);
       });
     });
   });
