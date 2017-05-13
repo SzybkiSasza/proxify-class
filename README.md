@@ -48,3 +48,17 @@ Decider has a simple purpose - to determine which class methods should be proxif
 ### Modifier function - `modifier(...args) => Array`
 
 Modifier function takes all the original arguments of a proxified method, clones and modifies them and returns as an elements of the array, so the original method can be called with them.
+
+## Support for Promises and async/await
+
+The library supports modifiers that are asynchronous. Please note that returning asynchronous value from the modifier will automatically cause whole proxified function to return asynchronous value. The original implementation **HAS** to be aware of this fact (so it's developer responsibility to be aware whether returned values should or should not be asynchronous).
+
+To sum up, following three cases make perfect sense:
+
+- Synchronous modifier and synchronous original implementation - will produce synchronously returned variable
+- Synchronous modifier and asynchronous original implementation - will always produce asynchronously returned variable (promise)
+- Asynchronous modifier **AND** asynchronous original implementation - will always produce asynchronously returned variable (promise)
+
+## Support for callbacks
+
+As the callbacks are just a special functions passed as the last parameter of the function, their support is given. Check the tests for an example.
