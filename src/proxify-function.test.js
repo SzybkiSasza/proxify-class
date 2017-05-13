@@ -23,4 +23,39 @@ describe('Proxify function', () => {
       expect(proxy).toEqual(false);
     });
   });
+
+  describe('Proxify function', () => {
+    it('Throws an error if original function is not a function', () => {
+      try {
+        proxifyFunction({}, {});
+
+        // In order to terminate try and always trigger catch, this line exists...
+        throw new Error('This is not reached');
+      } catch (err) {
+        expect(err.message).toEqual('Original Function must be a function!');
+      }
+    });
+
+    it('Throws an error when modifier is missing', () => {
+      try {
+        proxifyFunction(() => {});
+
+        // In order to terminate try and always trigger catch, this line exists...
+        throw new Error('This is not reached');
+      } catch (err) {
+        expect(err.message).toEqual('Modifier must be a function!');
+      }
+    });
+
+    it('Throws an error when modifier is not a function', () => {
+      try {
+        proxifyFunction(() => {}, {});
+
+        // In order to terminate try and always trigger catch, this line exists...
+        throw new Error('This is not reached');
+      } catch (err) {
+        expect(err.message).toEqual('Modifier must be a function!');
+      }
+    });
+  });
 });
