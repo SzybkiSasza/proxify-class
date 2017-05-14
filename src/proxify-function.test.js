@@ -1,3 +1,5 @@
+/* eslint-disable no-invalid-this */
+
 jest.mock('./get-proxy');
 
 import proxifyFunction from './proxify-function';
@@ -97,6 +99,68 @@ describe('Proxify function', () => {
 
         expect(result).toEqual(8);
       });
+
+      it('Properly passes "this" context', () => {
+        const thisBinding = {
+          multiply: (input, times) => input * times,
+        };
+
+        const original = function(input) {
+          if (this.multiply) {
+            return this.multiply(input, 2);
+          }
+          return 0;
+        };
+
+        const modifier = function(input) {
+          if (this.multiply) {
+            return [this.multiply(input, 3)];
+          }
+          return [0];
+        };
+
+        const proxified = proxifyFunction(original, modifier);
+        const result = proxified.apply(thisBinding, [4]); // 4 * 3 * 2
+
+        // Both modifier and original one used a proper "this" context!
+        expect(result).toEqual(24);
+      });
+
+      it('Supports callbacks', (done) => {
+        const original = (name, callback) => {
+          callback(null, `My name is ${name}`);
+        };
+        const jamesModifier = (name, callback) =>
+          [`${name}, James ${name}`, callback];
+
+        const proxified = proxifyFunction(original, jamesModifier);
+        proxified('Bond', (err, result) => {
+          expect(err).toEqual(null);
+          expect(result).toEqual('My name is Bond, James Bond');
+          done();
+        });
+      });
+
+      it('Supports an interesting way of modifying returned values!', () => {
+        const jamesOriginalModifier = (name, callback) => {
+          callback(null, `${name}, James ${name}`);
+        };
+        const sentenceModifier = (name, callback) =>
+          [name, (err, result) => `My name is ${result}`];
+
+        const proxified = proxifyFunction(jamesOriginalModifier,
+          sentenceModifier);
+        proxified('Bond', (err, result) => {
+          expect(err).toEqual(null);
+          expect(result).toEqual('My name is Bond, James Bond');
+          done();
+        });
+      });
+
+      // it('Supports asynchronous modifiers', () => {
+      //   const original = async input => input +1;
+      //   const modifier = async
+      // });
     });
   });
 });
