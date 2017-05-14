@@ -61,4 +61,7 @@ To sum up, following three cases make perfect sense:
 
 ## Support for callbacks
 
-As the callbacks are just a special functions passed as the last parameter of the function, their support is given. Check the tests for an example.
+As the callbacks are just a special functions passed as the last parameter of the function, their support is given (check the tests for an example). There are two scenarios for using callbacks:
+
+- Modifying input arguments - just pass all the arguments as they are
+- Modifying the callback (*This is interesting!*) - so you can modify values **AFTER** they are processed in the original function (by wrapping the callback in another callback!)
