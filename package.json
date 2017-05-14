@@ -4,7 +4,7 @@
   "description": "Proxifies class methods or single function",
   "main": "lib/index.js",
   "scripts": {
-    "babel": "babel src -d lib --ignore test.js",
+    "babel": "babel src -d lib --ignore *.test.js",
     "coverage": "jest --coverage",
     "codacy": "npm run coverage && cat ./coverage/lcov.info | codacy-coverage && rm -rf ./coverage",
     "lint": "eslint --fix src test",
@@ -31,7 +31,8 @@
   },
   "homepage": "https://github.com/SzybkiSasza/proxify-class#readme",
   "dependencies": {
-    "babel-runtime": "^6.23.0"
+    "babel-runtime": "^6.23.0",
+    "lodash": "^4.17.4"
   },
   "devDependencies": {
     "babel-cli": "^6.24.1",
@@ -46,6 +47,9 @@
     "nodemon": "^1.11.0"
   },
   "jest": {
-    "testPathIgnorePatterns":["node_modules", "lib"]
+    "testPathIgnorePatterns": [
+      "node_modules",
+      "lib"
+    ]
   }
 }
