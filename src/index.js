@@ -1,7 +1,9 @@
-/**
- * Proxifies the class or the method
- * @return {Function|Object} Proxified object
- */
-export default function proxify() {
-  return () => {};
-}
+import proxifyClass from './proxify-class';
+import proxifyFunction from './proxify-function';
+
+export default {
+  proxifyClass,
+  proxifyFunction,
+};
+
+export {proxifyClass, proxifyFunction};
