@@ -4,6 +4,8 @@
  *
  * @return {Class} Proxified class version
  */
-export default function proxifyClass() {
+export function proxifyClass() {
   return class Placeholder {};
 }
+
+export default proxifyClass;
