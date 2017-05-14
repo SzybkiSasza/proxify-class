@@ -65,13 +65,14 @@ describe('Proxify function', () => {
         expect(original).not.toEqual(proxified);
       });
 
-      it('Throws an error if modifier returns non-array-like arguments', () => {
+      it('Throws an error if modifier returns non-array arguments', () => {
         const original = (argument) => argument;
 
         // This should be an Array-like object!
         const modifier = (argument) => !argument;
 
         const proxified = proxifyFunction(original, modifier);
+
         try {
           proxified(true);
           throw new Error('This is not reached');
@@ -157,10 +158,42 @@ describe('Proxify function', () => {
         });
       });
 
-      // it('Supports asynchronous modifiers', () => {
-      //   const original = async input => input +1;
-      //   const modifier = async
-      // });
+      it('Supports asynchronous original functions', async () => {
+        const original = async (input) => input + 1;
+        const modifier = (input) => [input + 3];
+
+        const proxified = proxifyFunction(original, modifier);
+
+        const result = await proxified(3); // 3 + 3 + 1
+        expect(result).toEqual(7);
+      });
+
+      it('Supports asynchronous modifiers', async () => {
+        const original = async (input) => input + 26;
+        const modifier = async (input) => [input + 13];
+
+        const proxified = proxifyFunction(original, modifier);
+
+        const answerToEverything = await proxified(3); // 3 + 6 + 2
+        expect(answerToEverything).toEqual(42);
+      });
+
+      it('Throws an error if modifier returns non-array async arguments',
+      async () => {
+        const original = async (argument) => argument;
+
+        // This should be an Array-like object!
+        const modifier = async (argument) => !argument;
+
+        const proxified = await proxifyFunction(original, modifier);
+
+        try {
+          await proxified(true);
+          throw new Error('This is not reached');
+        } catch (err) {
+          expect(err.message).toEqual('Modifier returned non-array arguments!');
+        }
+      });
     });
   });
 });
