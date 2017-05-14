@@ -23,36 +23,45 @@ export function proxifyFunction(originalFunction, modifier) {
   if (Proxy) {
     return new Proxy(originalFunction, {
       apply(target, thisArg, argumentsList) {
-        const modifiedArguments = getModifiedArguments(
-          modifier, thisArg, argumentsList);
-        return originalFunction.apply(thisArg, modifiedArguments);
+        const modifiedArguments = modifier.apply(thisArg, argumentsList);
+        return callOriginalFunction(originalFunction, thisArg,
+          modifiedArguments);
       },
     });
   }
 
   // Fallback for environments not supporting Proxy
   return function(...args) {
-    const modifiedArguments = getModifiedArguments(modifier, this, args);
-    return originalFunction.apply(this, modifiedArguments);
+    const modifiedArguments = modifier.apply(this, args);
+    return callOriginalFunction(originalFunction, this, modifiedArguments);
   };
 }
 
-export default proxifyFunction;
-
 /**
- * Gets modified arguments from the modifier and checks if they are Array
- * If they are not, throws an understandable error
- * @param  {Function} modifier      Modifier function
- * @param  {Object} thisArg         "This" context
- * @param  {Array} argumentsList    Input arguments list
- * @return {Array}                  Modified arguments
+ * Returns the result from calling the original function
+ * Additionally, checks if the modified arguments are not a promise
+ * @param  {function}  originalFunction               Original function
+ * @param  {object} thisArg                           "This" context
+ * @param  {Array|Promise<Array>}  modifiedArguments [description]
+ * @return {[type]}                    [description]
  */
-function getModifiedArguments(modifier, thisArg, argumentsList) {
-  const modifiedArguments = modifier.apply(thisArg, argumentsList);
+function callOriginalFunction(originalFunction, thisArg, modifiedArguments) {
+  // Check if the returned arguments are promise
+  if (Promise.resolve(modifiedArguments) === modifiedArguments) {
+    return modifiedArguments.then((resolvedArguments) => {
+      if (!(resolvedArguments instanceof Array)) {
+        throw new Error('Modifier returned non-array arguments!');
+      }
+
+      return originalFunction.apply(thisArg, resolvedArguments);
+    });
+  }
 
   if (!(modifiedArguments instanceof Array)) {
     throw new Error('Modifier returned non-array arguments!');
   }
 
-  return modifiedArguments;
+  return originalFunction.apply(thisArg, modifiedArguments);
 }
+
+export default proxifyFunction;
