@@ -151,9 +151,9 @@ describe('Proxify function', () => {
 
         const proxified = proxifyFunction(jamesOriginalModifier,
           sentenceModifier);
-        proxified('Bond', (err, result) => {
+        proxified('Pond', (err, result) => {
           expect(err).toEqual(null);
-          expect(result).toEqual('My name is Bond, James Bond');
+          expect(result).toEqual('My name is Pond, James Pond');
           done();
         });
       });
