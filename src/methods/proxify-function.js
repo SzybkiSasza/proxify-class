@@ -1,6 +1,6 @@
 /* eslint-disable no-invalid-this */
 
-import getProxy from './get-proxy';
+import getProxy from '../utils/get-proxy';
 
 /**
  * Proxifies a single function. Calls modifier for every functio invocation

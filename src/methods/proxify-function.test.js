@@ -1,6 +1,6 @@
 /* eslint-disable no-invalid-this */
 
-jest.mock('./get-proxy');
+jest.mock('../utils/get-proxy');
 
 import proxifyFunction from './proxify-function';
 import getProxy from './get-proxy';
