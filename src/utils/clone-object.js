@@ -1,4 +1,6 @@
-import {cloneDeep, isEmpty} from 'lodash';
+import {cloneDeep} from 'lodash';
+
+import getAllPropertyNames from './get-all-property-names';
 
 /**
  * Clones the object or class
@@ -14,31 +16,10 @@ export default function clone(original) {
     Clone.prototype.constructor = original.prototype.constructor;
 
     // Get all the property names
-    console.log(getAllPropertyNames(original.prototype));
+    const allPropertyNames = getAllPropertyNames(original.prototype);
 
     return original;
   }
 
   return cloneDeep(original);
-}
-
-/**
- * Gets all - both own and inherited - property names
- * @param  {Object} obj Input Object
- * @return {Object}     List of own and inherited property names
- */
-function getAllPropertyNames(obj) {
-  // Recursive stop - either when we have null or we have Object
-  if (obj === null || !Object.prototype.isPrototypeOf(obj)) {
-    return false;
-  }
-
-  const propertyNames = Object.getOwnPropertyNames(obj);
-  const inheritedPropertyNames = getAllPropertyNames(
-    Object.getPrototypeOf(obj));
-
-  return {
-    propertyNames,
-    inheritedPropertyNames,
-  };
 }
