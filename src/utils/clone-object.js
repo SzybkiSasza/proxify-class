@@ -1,4 +1,4 @@
-import {clone as lodashClone, cloneDeep, each} from 'lodash';
+import {each} from 'lodash';
 
 /**
  * Clones the object or class
@@ -7,11 +7,8 @@ import {clone as lodashClone, cloneDeep, each} from 'lodash';
  */
 export default function clone(original) {
   if (original instanceof Function) {
-    // Create an empty class
-    let Clone = class {};
-
     // Assign constructor
-    Clone.constructor = lodashClone(original.constructor);
+    const Clone = original.prototype.constructor.bind({});
 
     // Recursively clone everything!
     Clone.prototype = assignProperties(original.prototype, {});
@@ -41,7 +38,7 @@ function assignProperties(original, target, depth = 0) {
   // Assign own properties
   const propertyNames = Object.getOwnPropertyNames(original);
   each(propertyNames, (propertyName) => {
-    target[propertyName] = original[propertyName];
+    target[propertyName] = original[propertyName].bind({});
   });
 
   depth++;
