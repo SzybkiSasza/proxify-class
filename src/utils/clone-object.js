@@ -1,6 +1,4 @@
-import {cloneDeep} from 'lodash';
-
-import getAllPropertyNames from './get-all-property-names';
+import {clone as lodashClone, cloneDeep, each} from 'lodash';
 
 /**
  * Clones the object or class
@@ -10,16 +8,44 @@ import getAllPropertyNames from './get-all-property-names';
 export default function clone(original) {
   if (original instanceof Function) {
     // Create an empty class
-    const Clone = class {};
+    let Clone = class {};
 
-    // Rewrite the constructor - the only one that is not cloned!
-    Clone.prototype.constructor = original.prototype.constructor;
+    // Assign constructor
+    Clone.constructor = lodashClone(original.constructor);
 
-    // Get all the property names
-    const allPropertyNames = getAllPropertyNames(original.prototype);
+    // Recursively clone everything!
+    Clone.prototype = assignProperties(original.prototype, {});
 
-    return original;
+    return Clone;
   }
 
   return cloneDeep(original);
+}
+
+/**
+ * Assigns own and inherited properties of the source to the target
+ * Separated to enable recursive calls
+ * @param  {Object} original    Original object
+ * @param  {Object} target      Target object
+ * @param  {Number} [depth=0]   Depth - to prevent circular dependencies
+ * @return {Object}             Target object
+ */
+function assignProperties(original, target, depth = 0) {
+  // Stop cases
+  if (original === null || // No more inheritance
+    !Object.prototype.isPrototypeOf(original) || // Deepest inheritance
+    depth > 10) { // Probable circular dependency - simple stop
+      return target;
+  }
+
+  // Assign own properties
+  const propertyNames = Object.getOwnPropertyNames(original);
+  each(propertyNames, (propertyName) => {
+    target[propertyName] = original[propertyName];
+  });
+
+  depth++;
+
+  const prototype = Object.getPrototypeOf(original);
+  return assignProperties(prototype, target, depth);
 }
