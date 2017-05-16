@@ -26,41 +26,40 @@ describe('Clone Object', () => {
     expect(clonedObj.z).not.toBe(original.z);
   });
 
-  // it('Clones class instance as it is', () => {
-  //   const Y = class {
-  //     c() {
-  //       this.w = 'l';
-  //     }
-  //   };
-  //
-  //   const X = class extends Y {
-  //     constructor(x) {
-  //       super();
-  //
-  //       if (!x) {
-  //         throw new Exception('NoNoNo!');
-  //       }
-  //       this.a = 'b';
-  //     }
-  //
-  //     b() {
-  //       this.c = 'd';
-  //     }
-  //   };
-  //
-  //   const Clone = clone(X);
-  //   expect(Clone).not.toBe(X);
-  // });
-  //
-  // it('Clones the class as it is', () => {
-  //
-  // });
-  //
-  // it('Clones inherited properties', () => {
-  //
-  // });
-  //
-  // it('Clones static properties', () => {
-  //
-  // });
+  it('Clones the Class definitions', () => {
+    const A = class {
+      constructor() {
+        this.a = 'a';
+      }
+      b() {
+        this.c = 'c';
+      }
+    };
+
+    const B = clone(A);
+    expect(B).not.toBe(A);
+    expect(B.prototype.b).not.toBe(A.prototype.b);
+  });
+
+  it('Allows for instantiating cloned class', () => {
+    const X = class {
+      constructor() {
+        this.a = 'a';
+      }
+      b() {
+        this.c = 'c';
+      }
+    };
+
+    const Y = clone(X);
+    const y = new Y();
+    y.b();
+
+    expect(y.a).toEqual('a');
+    expect(y.c).toEqual('c');
+  });
+
+  it('Clones the inherited class properties', () => {
+
+  });
 });
