@@ -26,28 +26,27 @@ describe('Clone Object', () => {
     expect(clonedObj.z).not.toBe(original.z);
   });
 
-  it('Clones the Class definitions', () => {
-    const A = class {
-      constructor() {
-        this.a = 'a';
-      }
-      b() {
-        this.c = 'c';
-      }
+  it('Clones the Class definition', () => {
+    // Old - style class def, to check compatibility
+    const A = function() {
+      this.prop = 'propVal';
+    };
+    A.prototype.setA = function() {
+      this.a = 'a';
     };
 
     const B = clone(A);
     expect(B).not.toBe(A);
-    expect(B.prototype.b).not.toBe(A.prototype.b);
+    expect(B.prototype.setA).not.toBe(A.prototype.setA);
   });
 
   it('Allows for instantiating cloned class', () => {
     const X = class {
       constructor() {
-        this.a = 'a';
+        this.constructedProp = 'val1';
       }
       b() {
-        this.c = 'c';
+        this.assignedProp = 'val2';
       }
     };
 
@@ -55,11 +54,7 @@ describe('Clone Object', () => {
     const y = new Y();
     y.b();
 
-    expect(y.a).toEqual('a');
-    expect(y.c).toEqual('c');
-  });
-
-  it('Clones the inherited class properties', () => {
-
+    expect(y.constructedProp).toEqual('val1');
+    expect(y.assignedProp).toEqual('val2');
   });
 });
