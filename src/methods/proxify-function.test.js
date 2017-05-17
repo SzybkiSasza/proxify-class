@@ -3,7 +3,7 @@
 jest.mock('../utils/get-proxy');
 
 import proxifyFunction from './proxify-function';
-import getProxy from './get-proxy';
+import getProxy from '../utils/get-proxy';
 
 describe('Proxify function', () => {
   it('Is a defined export', () => {
