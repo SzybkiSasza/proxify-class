@@ -1,4 +1,4 @@
-import {cloneDeep, each} from 'lodash';
+import {assign, cloneDeep, each} from 'lodash';
 
 /**
  * Clones the object or class
@@ -7,13 +7,19 @@ import {cloneDeep, each} from 'lodash';
  */
 export default function clone(original) {
   if (original instanceof Function) {
-    let Clone = class {};
-
     // Assign constructor
-    Clone = original.prototype.constructor.bind(Clone);
+    let Clone = class extends original {
+      /**
+       * Simple constructor wrapper - to clone
+       * @param  {Array} args  Input arguments
+       */
+      constructor(...args) {
+        super(...args);
+      }
+    };
 
     // Recursively clone everything!
-    Clone.prototype = assignProperties(original.prototype, {});
+    assignProperties(original.prototype, Clone.prototype);
 
     return Clone;
   }
