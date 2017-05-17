@@ -57,4 +57,59 @@ describe('Clone Object', () => {
     expect(y.constructedProp).toEqual('val1');
     expect(y.assignedProp).toEqual('val2');
   });
+
+  it('Clones the inherited class properties', () => {
+    const Parent = class {
+      constructor(input) {
+        this.input = input;
+      }
+    };
+
+    const A = class extends Parent {
+      constructor(input) {
+        super(input);
+        this.constructedProp = 'A';
+      }
+      a() {
+        return 'a';
+      }
+    };
+
+    const B = clone(A);
+    const b = new B('someInput');
+
+    const first = b.a();
+    A.prototype.a = () => {
+      return 'b';
+    };
+    const second = b.a();
+
+    expect(first).toEqual(second);
+    expect(b.input).toEqual('someInput');
+    expect(b.constructedProp).toEqual('A');
+  });
+
+  it('Clones deep inherited properties', () => {
+    const Parent = class {
+      someMethod() {
+        this.someResult = 123;
+      }
+    };
+    const A = class extends Parent {
+      ownMethod() {
+        this.prop = 456;
+      }
+    };
+
+    const B = clone(A);
+    const b = new B('someInput');
+
+    const first = b.someMethod();
+    Parent.prototype.someMethod = function() {
+      this.someResult = 789;
+    };
+    const second = b.someMethod();
+
+    expect(first).toEqual(second);
+  });
 });
