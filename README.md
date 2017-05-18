@@ -40,7 +40,7 @@ Modifier function should take a form of `modifier(...args) => Array`.
 
 **Please note!** Modifying original arguments passed to a modifier function is an **extremely** bad practice (immutability for the win!). The recommended approach is to return new list of arguments after processing original ones.
 
-## `proxifyClass(originalClass, decide, modifier) => Class`
+## `proxifyClass(originalClass, modifier, decide) => Class|Object`
 
 `ProxifyClass` allows for proxifying classes (not the class instances, though!). It allows for proxifying any keys existing on the class prototype, apart from the constructor (if you want to proxify contructor, please use `proxifyFunction` separately).
 
