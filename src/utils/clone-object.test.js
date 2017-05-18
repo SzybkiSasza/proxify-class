@@ -112,4 +112,21 @@ describe('Clone Object', () => {
 
     expect(first).toEqual(second);
   });
+
+  it('Clones static properties as well', () => {
+    const A = class {
+      static someMethod() {
+        return 123;
+      }
+    };
+
+    const B = clone(A);
+    const first = B.someMethod();
+    A.someMethod = function() {
+      return 456;
+    };
+    const second = B.someMethod();
+
+    expect(first).toEqual(second);
+  });
 });
