@@ -1,3 +1,6 @@
+import clone from '../utils/clone-object';
+import profixyFunction from './proxify-function';
+
 /**
  * Proxifies Class or Class instance
  * @param  {Function|Object} original     Original object or Function
