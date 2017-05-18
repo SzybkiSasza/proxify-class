@@ -1,5 +1,5 @@
 import clone from '../utils/clone-object';
-import profixyFunction from './proxify-function';
+import proxifyFunction from './proxify-function';
 
 /**
  * Proxifies Class or Class instance
@@ -11,7 +11,17 @@ import profixyFunction from './proxify-function';
  * @return {Function|Object}              Resulting class or class instance
  */
 export function proxifyClass(original, modifier, decide) {
-  return original;
+  // First - clone the original
+  const cloned = clone(original);
+
+  // Proxify object and class separately
+  if (original instanceof Object) {
+
+  } else {
+    
+  }
+
+  return cloned;
 }
 
 export default proxifyClass;
