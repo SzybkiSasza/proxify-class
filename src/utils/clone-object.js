@@ -1,4 +1,18 @@
-import {assign, cloneDeep, each} from 'lodash';
+import {cloneDeep, difference, each} from 'lodash';
+
+// List of non-enumerables - when checking Function.prototype
+// We have to skip assigning them, as they are mostly read-only and internal
+const nonEnumerables = [
+  'length',
+  'name',
+  'arguments',
+  'caller',
+  'apply',
+  'bind',
+  'call',
+  'prototype',
+  'toString',
+];
 
 /**
  * Clones the object or class
@@ -7,7 +21,6 @@ import {assign, cloneDeep, each} from 'lodash';
  */
 export default function clone(original) {
   if (original instanceof Function) {
-    // Assign constructor
     let Clone = class extends original {
       /**
        * Simple constructor wrapper - to clone
@@ -19,7 +32,7 @@ export default function clone(original) {
     };
 
     // Recursively clone everything!
-    assignProperties(original.prototype, Clone.prototype);
+    assignProperties(original, Clone);
 
     return Clone;
   }
@@ -30,6 +43,8 @@ export default function clone(original) {
 /**
  * Assigns own and inherited properties of the source to the target
  * Separated to enable recursive calls
+ * This method mutates the target!!!
+ *
  * @param  {Object} original    Original object
  * @param  {Object} target      Target object
  * @param  {Number} [depth=0]   Depth - to prevent circular dependencies
@@ -44,13 +59,28 @@ function assignProperties(original, target, depth = 0) {
   }
 
   // Assign own properties
-  const propertyNames = Object.getOwnPropertyNames(original);
+  let propertyNames = Object.getOwnPropertyNames(original);
+
+  // Skip non-enumerables
+  propertyNames = difference(propertyNames, nonEnumerables);
+
   each(propertyNames, (propertyName) => {
-    target[propertyName] = original[propertyName].bind(target);
+    if (original[propertyName] instanceof Function) {
+      target[propertyName] = original[propertyName].bind(target);
+    } else {
+      target[propertyName] = cloneDeep(original[propertyName]);
+    }
   });
 
   depth++;
 
   const prototype = Object.getPrototypeOf(original);
+
+  // Top-level assign - called for Class definition, probably.
+  // Skip Function.prototype and use a class one
+  if (Function.prototype.isPrototypeOf(original)) {
+    return assignProperties(original.prototype, target.prototype, depth);
+  }
+
   return assignProperties(prototype, target, depth);
 }
