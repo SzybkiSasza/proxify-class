@@ -17,9 +17,10 @@ const nonEnumerables = [
 /**
  * Clones the object or class
  * @param  {Object|Function} original           Input object or class
+ * @param  {Function}        cloner             Function used to clone one prop
  * @return {Object|Function}                    Resulting clone
  */
-export default function clone(original) {
+export default function clone(original, cloner = false) {
   if (original instanceof Function) {
     let Clone = class extends original {
       /**
@@ -37,7 +38,7 @@ export default function clone(original) {
     return Clone;
   }
 
-  return cloneDeep(original);
+  return assignProperties(original, {});
 }
 
 /**
