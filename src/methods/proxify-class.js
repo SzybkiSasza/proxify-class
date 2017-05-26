@@ -34,8 +34,8 @@ function buildCloner(modifier, decide) {
    */
   return function cloner(propertyName, originalFunction, target) {
     // If decider is present, omit proxifying process for negative decisions
-    if (decider && !decider(propertyName)) {
-      return originalProperty.bind(target);
+    if (decide && !decide(propertyName)) {
+      return originalFunction.bind(target);
     }
 
     return proxifyFunction(originalFunction, modifier);
