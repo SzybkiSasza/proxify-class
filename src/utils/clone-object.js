@@ -33,12 +33,12 @@ export default function clone(original, cloner = false) {
     };
 
     // Recursively clone everything!
-    assignProperties(original, Clone);
+    assignProperties(original, Clone, cloner);
 
     return Clone;
   }
 
-  return assignProperties(original, {});
+  return assignProperties(original, {}, cloner);
 }
 
 /**
@@ -48,10 +48,11 @@ export default function clone(original, cloner = false) {
  *
  * @param  {Object} original    Original object
  * @param  {Object} target      Target object
+ * @param  {Object} cloner      Optional function, used to clone prop
  * @param  {Number} [depth=0]   Depth - to prevent circular dependencies
  * @return {Object}             Target object
  */
-function assignProperties(original, target, depth = 0) {
+function assignProperties(original, target, cloner, depth = 0) {
   // Stop cases
   if (original === null || // No more inheritance
     !Object.prototype.isPrototypeOf(original) || // Deepest inheritance
@@ -80,8 +81,9 @@ function assignProperties(original, target, depth = 0) {
   // Top-level assign - called for Class definition, probably.
   // Skip Function.prototype and use a class one
   if (Function.prototype.isPrototypeOf(original)) {
-    return assignProperties(original.prototype, target.prototype, depth);
+    return assignProperties(original.prototype, target.prototype, cloner,
+      depth);
   }
 
-  return assignProperties(prototype, target, depth);
+  return assignProperties(prototype, target, cloner, depth);
 }
