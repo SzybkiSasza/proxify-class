@@ -48,7 +48,7 @@ export default function clone(original, cloner = false) {
  *
  * @param  {Object} original    Original object
  * @param  {Object} target      Target object
- * @param  {Object} cloner      Optional function, used to clone prop
+ * @param  {Object} cloner      Optional function, used to clone function props
  * @param  {Number} [depth=0]   Depth - to prevent circular dependencies
  * @return {Object}             Target object
  */
@@ -67,10 +67,20 @@ function assignProperties(original, target, cloner, depth = 0) {
   propertyNames = difference(propertyNames, nonEnumerables);
 
   each(propertyNames, (propertyName) => {
-    if (original[propertyName] instanceof Function) {
-      target[propertyName] = original[propertyName].bind(target);
+    const originalProperty = original[propertyName];
+
+    if (originalProperty instanceof Function) {
+      // Use cloner, if it is passed
+      if (cloner) {
+        target[propertyName] = cloner(originalProperty);
+      } else {
+        // Bind essentially creates clone with passed binding
+        target[propertyName] = originalProperty.bind(target);
+      }
+    } else if (originalProperty instanceof Object) {
+      target[propertyName] = assignProperties(originalProperty, {}, cloner);
     } else {
-      target[propertyName] = cloneDeep(original[propertyName]);
+      target[propertyName] = cloneDeep(originalProperty);
     }
   });
 
