@@ -44,16 +44,16 @@ describe('Clone Object', () => {
     expect(clonedObj.x).toEqual(1);
   });
 
-  it('Uses customizer for cloning function properties, if passed', () => {
+  it('Uses cloner for cloning function properties, if passed', () => {
     const original = {
       x: 1,
       y: (val) => val + 2,
     };
 
     // Creates a function that will run original with value + 1
-    const customizer = (original) => (val) => original(val + 1);
+    const cloner = (propertyName, original) => (val) => original(val + 1);
 
-    const clonedObj = clone(original, customizer);
+    const clonedObj = clone(original, cloner);
 
     const originalResult = original.y(1);
     const clonedResult = clonedObj.y(1);
@@ -166,7 +166,7 @@ describe('Clone Object', () => {
     expect(first).toEqual(second);
   });
 
-  it('Uses customizer for cloning class methods, if passed', () => {
+  it('Uses cloner for cloning class methods, if passed', () => {
     const Original = function() {
       this.prop = 'val';
     };
@@ -177,11 +177,11 @@ describe('Clone Object', () => {
 
     // Creates a function that will run original with value + 2
     // Returns a bound function!
-    const customizer = (originalFunction) => function(variable) {
+    const cloner = (propertyName, originalFunction) => function(variable) {
       return originalFunction.bind(this)(variable + 2);
     };
 
-    const ClonedClass = clone(Original, customizer);
+    const ClonedClass = clone(Original, cloner);
     const clonedObject = new ClonedClass();
 
     const result = clonedObject.method(4); // 4 + 2 + 1 = 7
