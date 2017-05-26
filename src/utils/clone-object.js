@@ -72,7 +72,7 @@ function assignProperties(original, target, cloner, depth = 0) {
     if (originalProperty instanceof Function) {
       // Use cloner, if it is passed
       if (cloner) {
-        target[propertyName] = cloner(originalProperty);
+        target[propertyName] = cloner(propertyName, originalProperty, target);
       } else {
         // Bind essentially creates clone with passed binding
         target[propertyName] = originalProperty.bind(target);
