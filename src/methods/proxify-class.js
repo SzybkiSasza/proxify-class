@@ -41,12 +41,8 @@ function buildCloner(modifier, decide, generateModifier) {
       return originalFunction.bind(target);
     }
 
-    let generatedModifier;
-    if (generateModifier) {
-      generatedModifier = modifier(propertyName);
-    } else {
-      generatedModifier = modifier;
-    }
+    const generatedModifier = generateModifier ?
+      modifier(propertyName) : modifier;
 
     return proxifyFunction(originalFunction, generatedModifier);
   };
