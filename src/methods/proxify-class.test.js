@@ -90,4 +90,36 @@ describe('Proxify Class', () => {
       c: 123,
     });
   });
+
+  it('Allows for passing modifier generator', () => {
+    // Returns string - does not matter, we just want to check if it was run
+    proxifyFunction.mockReturnValue('SHOULD BE PROXIFIED FUNCTION HERE');
+
+    // Just a simple iteration over the properties and running cloner
+    clone.mockImplementation((obj, cloner) =>
+      reduce(obj, (memo, value, key) => {
+        if (value instanceof Function) {
+          memo[key] = cloner(key, value);
+        } else {
+          memo[key] = value;
+        }
+
+        return memo;
+      }, {})
+    );
+
+    const original = {
+      a: function() {},
+      b: function() {},
+    };
+
+    const generator = jest.fn((value) => () => {})
+    proxifyClass(original, generator, false, {
+      passGenerator: true,
+    });
+
+    expect(generator).toHaveBeenCalledTimes(2);
+    expect(generator).toHaveBeenCalledWith('a');
+    expect(generator).toHaveBeenCalledWith('b');
+  });
 });

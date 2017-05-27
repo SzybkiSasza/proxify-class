@@ -12,7 +12,7 @@ import proxifyFunction from './proxify-function';
  * @return {Function|Object}              Resulting class or class instance
  */
 export function proxifyClass(original, modifier, decide, options = {}) {
- const cloner = buildCloner(modifier, decide, options.passGenerator = false);
+ const cloner = buildCloner(modifier, decide, options.passGenerator);
 
  return clone(original, cloner);
 }
