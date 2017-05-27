@@ -8,10 +8,11 @@ import proxifyFunction from './proxify-function';
  *                                          proxified method
  * @param  {Function} decide              Optional decide function to choose
  *                                          which methods should be proxified
+ * @param  {Object}   options             OPtions object
  * @return {Function|Object}              Resulting class or class instance
  */
-export function proxifyClass(original, modifier, decide) {
- const cloner = buildCloner(modifier, decide);
+export function proxifyClass(original, modifier, decide, options = {}) {
+ const cloner = buildCloner(modifier, decide, options.passGenerator = false);
 
  return clone(original, cloner);
 }
@@ -22,9 +23,11 @@ export function proxifyClass(original, modifier, decide) {
  *                                          proxified method
  * @param  {Function} decide              Optional decide function to choose
  *                                          which methods should be proxified
+ * @param  {Object}   generateModifier    Indicator that passed function is a
+ *                                          generator that returns a modifier
  * @return {Function}                     CloneObject-compatible cloner
  */
-function buildCloner(modifier, decide) {
+function buildCloner(modifier, decide, generateModifier) {
   /**
    * Checks if given Function should be cloned and applies proxy, if needed
    * @param  {String}   propertyName        Property the function is attached to
@@ -38,7 +41,14 @@ function buildCloner(modifier, decide) {
       return originalFunction.bind(target);
     }
 
-    return proxifyFunction(originalFunction, modifier);
+    let generatedModifier;
+    if (generateModifier) {
+      generatedModifier = modifier(propertyName);
+    } else {
+      generatedModifier = modifier;
+    }
+
+    return proxifyFunction(originalFunction, generatedModifier);
   };
 }
 
