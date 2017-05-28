@@ -40,13 +40,17 @@ Modifier function should take a form of `modifier(...args) => Array`.
 
 **Please note!** Modifying original arguments passed to a modifier function is an **extremely** bad practice (immutability for the win!). The recommended approach is to return new list of arguments after processing original ones.
 
-## `proxifyClass(originalClass, decide, modifier) => Class`
+## `proxifyClass(originalClass, modifier, decide, options) => Class|Object`
 
 `ProxifyClass` allows for proxifying classes (not the class instances, though!). It allows for proxifying any keys existing on the class prototype, apart from the constructor (if you want to proxify contructor, please use `proxifyFunction` separately).
 
 As only some of the methods might need to be proxified in specific cases, optional `decide` function can be passed to `proxifyClass` to statically choose which class methods should be modified, based on their names.
 
 Under the hood, `proxifyClass` calls `proxifyFunction` for every class method that should be proxified.
+
+Options support following parameters:
+
+ - `passGenerator` - indicates that passed modifier is a modifier generator, taking `propertyName` as an only argument and returning  modifier. Useful for any interaction that needs property (method) name, e.g. logging
 
 ### Decider function - `decide(methodName) => Boolean`
 
@@ -72,3 +76,7 @@ As the callbacks are just a special functions passed as the last parameter of th
 
 - Modifying input arguments - modify arguments however you want and pass the callback as it is
 - Modifying the callback (*This is an interesting case!*) - you can modify values **AFTER** they are processed in the original function. You just have to wrap the callback into another callback and perform any operation you want on returned values.
+
+# Examples
+
+For examples, please refer to `examples` directory and examples README.

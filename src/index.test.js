@@ -1,5 +1,5 @@
-jest.mock('./proxify-class');
-jest.mock('./proxify-function');
+jest.mock('./methods/proxify-class');
+jest.mock('./methods/proxify-function');
 
 import index from './';
 import {proxifyClass, proxifyFunction} from './index';

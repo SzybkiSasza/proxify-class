@@ -1,5 +1,5 @@
-import proxifyClass from './proxify-class';
-import proxifyFunction from './proxify-function';
+import proxifyClass from './methods/proxify-class';
+import proxifyFunction from './methods/proxify-function';
 
 export default {
   proxifyClass,
