@@ -113,7 +113,7 @@ describe('Proxify Class', () => {
       b: function() {},
     };
 
-    const generator = jest.fn((value) => () => {})
+    const generator = jest.fn((value) => () => {});
     proxifyClass(original, generator, false, {
       passGenerator: true,
     });
