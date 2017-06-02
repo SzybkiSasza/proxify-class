@@ -3,7 +3,7 @@
 const proxifyClass = require('../../../lib').proxifyClass;
 
 /**
- * Test class for Logging
+ * Test class for Permissions
  */
 class TestClass {
   /**

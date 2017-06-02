@@ -2,6 +2,8 @@
 
 This folder contains example usages of `proxify-class` and serves as a starting point for using the library in real situations.
 
+Examples are mostly kept as simple as possible, only to underline some common concepts and problems that the library could solve.
+
 ## Example versions
 
 Examples are divided into two versions - one written using `ES6` features and another ones using `ES5`.
@@ -22,6 +24,12 @@ To run any example:
 4. Run the example:
   - NodeJS - run `node index`
   - Browser - copy `examples` and `lib` directories and include chosen example file using your module loader.
+
+## Async DB
+
+This example shows how to enrich input arguments before calling method implementation when the enrichment is performed asynchronously.
+
+Input that is passed to the method is always an object, thanks to modifier. The asynchronous nature of the method is preserved.
 
 ## Logging
 

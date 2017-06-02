@@ -8,7 +8,7 @@ const proxifyClass = require('../../../lib/es5').proxifyClass;
 function TestClass() {};
 
 /**
- * [getName description]
+ * Simple method to show operations - this does not throw an error by standard
  * @param  {Object} user              Some user context
  * @param  {Object} invokingUser      Invoking user - for permissions check
  * @return {String}                   User name
