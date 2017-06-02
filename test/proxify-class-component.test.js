@@ -67,7 +67,33 @@ describe('Proxify class component tests', () => {
   });
 
   it('Proxifies specific class methods', () => {
+    class A {
+      multiplyBy(input, value) {
+        return input * value;
+      }
 
+      specialPrefixPower(input, power) {
+        return Math.pow(input, power);
+      }
+    }
+
+    const modifier = function(input, power) {
+      return [input, power * 2];
+    };
+    const decide = function(methodName) {
+      return methodName.indexOf('specialPrefix') > -1;
+    };
+
+    const ProxifiedA = proxifyClass(A, modifier, decide);
+    const proxifiedInstance = new ProxifiedA();
+
+    // 2 ^ (3 * 2) => 2 ^ 6 = 64
+    const result = proxifiedInstance.specialPrefixPower(2, 3);
+    expect(result).toEqual(64);
+
+    // 2 * 3 = 6
+    const unmodifiedResult = proxifiedInstance.multiplyBy(2, 3);
+    expect(unmodifiedResult).toEqual(6);
   });
 
   it('Generates modifier with passed generator', () => {
