@@ -30,3 +30,9 @@ This example shows how each method invocation could be easily logged to any logg
 Each modifier returns untouched arguments list and logs them as they are.
 
 What's more, as there is no signature given for modifier, it can work with any input
+
+## Permissions
+
+This example shows how to halt method invocation and throw an error for the invoker, if the invoker does not have permissions to run it.
+
+Each modifier throws an error if the "user" points to the user that does not have permission to call this function.
