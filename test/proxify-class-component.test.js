@@ -97,6 +97,30 @@ describe('Proxify class component tests', () => {
   });
 
   it('Generates modifier with passed generator', () => {
+    class A {
+      add(input, value) {
+        return input + value;
+      }
+    }
 
+    const listener = jest.fn();
+    const modifier = function(methodName) {
+      listener(methodName);
+      return function(a, b) {
+        return [a, b * 2];
+      };
+    };
+
+    const ProxifiedA = proxifyClass(A, modifier, false, {
+      passGenerator: true,
+    });
+    const proxifiedInstance = new ProxifiedA();
+
+    // 2 + 3 * 2 = 8
+    const result = proxifiedInstance.add(2, 3);
+
+    expect(result).toEqual(8);
+    expect(listener).toHaveBeenCalledTimes(1);
+    expect(listener).toHaveBeenCalledWith('add');
   });
 });
