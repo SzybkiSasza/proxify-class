@@ -25,11 +25,13 @@ To run any example:
   - NodeJS - run `node index`
   - Browser - copy `examples` and `lib` directories and include chosen example file using your module loader.
 
-## Async DB
+## Async DB (only for ES6)
 
 This example shows how to enrich input arguments before calling method implementation when the enrichment is performed asynchronously.
 
 Input that is passed to the method is always an object, thanks to modifier. The asynchronous nature of the method is preserved.
+
+This example is present only for `ES6` version, as it would require adding a promise library for ES5 code.
 
 ## Logging
 
@@ -44,3 +46,9 @@ What's more, as there is no signature given for modifier, it can work with any i
 This example shows how to halt method invocation and throw an error for the invoker, if the invoker does not have permissions to run it.
 
 Each modifier throws an error if the "user" points to the user that does not have permission to call this function.
+
+## Result modification
+
+An example taking results returned by the callback and modifying them to a standard format.
+
+It modifies the results **after** they are asynchronously returned in the callback
