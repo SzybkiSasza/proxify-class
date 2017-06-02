@@ -1,14 +1,15 @@
 {
   "name": "proxify-class",
-  "version": "0.3.0",
+  "version": "1.0.0",
   "description": "Proxifies class methods or single function",
   "main": "lib/index.js",
   "scripts": {
-    "babel": "babel src -d lib --ignore *.test.js",
+    "buildES6": "babel src -d lib --ignore *.test.js",
+    "buildES5": "babel src -d lib/es5 --ignore *.test.js --plugins=transform-runtime --presets=env",
     "coverage": "jest --coverage",
     "codacy": "npm run coverage && cat ./coverage/lcov.info | codacy-coverage && rm -rf ./coverage",
     "lint": "eslint --fix src test",
-    "prepublish": "npm run babel",
+    "prepublish": "npm run buildES6 && npm run buildES5",
     "start": "nodemon --exec babel-node src/index.js",
     "test": "jest"
   },
