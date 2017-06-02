@@ -1,14 +1,23 @@
 language: node_js
+
 node_js:
 - '6'
+
 cache:
   yarn: true
+
 script:
 - npm run lint
 - npm run codacy
+
+before_deploy:
+- npm run buildES5
+- npm run buildES6
+
 deploy:
   provider: npm
   api_key:
-    secure: ToxJ1zeylH8CCy0texDLK1tAtsyYkR4TKcClzOVABx7jw5fcajg94eoDhlM0A6Q5pu5B4+6waP0hm7q4cj4XxMrVF3ELmaXHPNRVhmxpigQaQ7lrPWCWKcV2XHQaRdJiz1V/R9Ow8E//UfVwNlsYYD0kZ31YD2YMppP8tyctZh8pUNQ3BfWMT4sYYtATWA+oP5JfgJTfMzLUUf/mM6+P8WI7CwioA4LVCdJINhBWzaUtX64mlvVJ6ij2JTZSUtcXa4TYv65REJNsAeLteOA7Kk0CP+MueDmNxhlgU7TWRp++L2A3rvmzqOIVbl0JIgazqq2L/BHMXqRVm5zePOf6xAvLtFanYauUea3igNTyQ19UIPe9SeVyNESdSDc6I/ukaik8GdoWy6UrvxNtStqAKaJehM6GAJtuy7jBcbPxz/OP3xtn5s5G2aI92UG5eJwPSJcS8iumkSQNhyZgirxK7D6LgzpLLd2tPk/JpqVjFQtCugE3Msha6pZQeu0XoWodz/RsMDcLXpmBJclj+0RBqspMSckKqeB3RUSJFyIdICKy9qeVobOsMRqgutDf7tTHdIFPYYzwJj9yGS7oIVvMCGAA0JZlk5E12RXHU4CUci4iiFZKOCxfCaDvN+DLPzrVKNfII7G/tDZdVbvJksj8rukLqkopXiwum999wD79Cn8=
+    secure: B8exSR5Om8MxzRL5aCz5gPP7yhBordldHiRVh/6yQX4JyVOC2ntDLss9KLVmRpHGts9sG5fPBC9vAo0DCgqIBsVmicGK5juGA++r3Mx5S86FylM6jiBtdlM7ZOouhR3aY8fuR25DFqGpp2Ie9oFsJEG6nDZDSkHzYFZW6wPW6drq7yxfY9PqMFs4VB3tFRiNc5d8GjO19TS2R6QTD3+VCdRYXBuJuAWaNNdS1h+Fi3ynIk/6Akxk15lMyeIRiG67w/pQSx5utgBEgdHaqbIRrWwPHgVH20jVsjZQ8Lqg9ssWgCxt08ZzQgWRn0DRdz3FJcI6Ffa2/sNINbPygJwwGmwJIcx0+S7JIlB8IPwYmk+N+fLMp8UV20HpwV+MoGvlkED7QTajtrMEEzIkxnGxkGZi2npgfwnImxaGUtSXTj3QyTJ2ELxwJHq3yK8G3XSfT5RVR/9iXTKaD+bbb+hOOtwguN1m3X9N06fROeSA5jFIE7Qdb7JL+1G2IQlggrI0TXazq3s7amFRME0Lq8kn/4dQ/DcEMDjWVneCQf4Eaa+UyQWJpk91gWw/JtDi5FasPGsLN3BLPSmwFuDc/c4jLtQtWFbPXlU3yVhEAuFSauiH/Yyz6oMa9PqqzAiHzb7JHYB53S9Q33vJ/g5A8tidJhqUBQGYJdHWRTl8WZizIWw=
   on:
+    tags: true
     branch: master

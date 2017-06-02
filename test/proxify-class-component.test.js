@@ -67,10 +67,84 @@ describe('Proxify class component tests', () => {
   });
 
   it('Proxifies specific class methods', () => {
+    class A {
+      multiplyBy(input, value) {
+        return input * value;
+      }
 
+      specialPrefixPower(input, power) {
+        return Math.pow(input, power);
+      }
+    }
+
+    const modifier = function(input, power) {
+      return [input, power * 2];
+    };
+    const decide = function(methodName) {
+      return methodName.indexOf('specialPrefix') > -1;
+    };
+
+    const ProxifiedA = proxifyClass(A, modifier, decide);
+    const proxifiedInstance = new ProxifiedA();
+
+    // 2 ^ (3 * 2) => 2 ^ 6 = 64
+    const result = proxifiedInstance.specialPrefixPower(2, 3);
+    expect(result).toEqual(64);
+
+    // 2 * 3 = 6
+    const unmodifiedResult = proxifiedInstance.multiplyBy(2, 3);
+    expect(unmodifiedResult).toEqual(6);
   });
 
   it('Generates modifier with passed generator', () => {
+    class A {
+      add(input, value) {
+        return input + value;
+      }
+    }
 
+    const listener = jest.fn();
+    const modifier = function(methodName) {
+      listener(methodName);
+      return function(a, b) {
+        return [a, b * 2];
+      };
+    };
+
+    const ProxifiedA = proxifyClass(A, modifier, false, {
+      passGenerator: true,
+    });
+    const proxifiedInstance = new ProxifiedA();
+
+    // 2 + 3 * 2 = 8
+    const result = proxifiedInstance.add(2, 3);
+
+    expect(result).toEqual(8);
+    expect(listener).toHaveBeenCalledTimes(2); // 'constructor' + 'add'
+    expect(listener).toHaveBeenCalledWith('add');
+  });
+
+  it('Proxifies only class methods', () => {
+    class A {
+      constructor(input) {
+        this.input = input;
+      }
+
+      inputModifier(newInput) {
+        this.input = newInput;
+      }
+    };
+
+    const modifier = function(input) {
+      return [input + 1];
+    };
+
+    const ProxifiedA = proxifyClass(A, modifier);
+
+    const proxifiedInstance = new ProxifiedA(2);
+    expect(proxifiedInstance.input).toEqual(2);
+
+    proxifiedInstance.inputModifier(3); // 3 + 1 = 4
+    expect(proxifiedInstance.input).toEqual(4);
   });
 });

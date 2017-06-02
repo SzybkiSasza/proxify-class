@@ -37,6 +37,7 @@ function buildCloner(modifier, decide, generateModifier) {
    */
   return function cloner(propertyName, originalFunction, target) {
     // If decider is present, omit proxifying process for negative decisions
+    // We skip the constructor as well!
     if (decide && !decide(propertyName)) {
       return originalFunction.bind(target);
     }

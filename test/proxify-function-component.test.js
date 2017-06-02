@@ -28,8 +28,6 @@ describe('Proxify function component tests', () => {
     const sentenceModifier = (name, callback) =>
       [name, (err, result) => callback(err, `${result} Czerwony Stoliczek`)];
 
-    console.log(proxifyFunction);
-
     const proxified = proxifyFunction(original, sentenceModifier);
     proxified('Pentliczek', (err, result) => {
       expect(err).toEqual(null);
