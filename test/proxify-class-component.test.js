@@ -120,7 +120,31 @@ describe('Proxify class component tests', () => {
     const result = proxifiedInstance.add(2, 3);
 
     expect(result).toEqual(8);
-    expect(listener).toHaveBeenCalledTimes(1);
+    expect(listener).toHaveBeenCalledTimes(2); // 'constructor' + 'add'
     expect(listener).toHaveBeenCalledWith('add');
+  });
+
+  it('Proxifies only class methods', () => {
+    class A {
+      constructor(input) {
+        this.input = input;
+      }
+
+      inputModifier(newInput) {
+        this.input = newInput;
+      }
+    };
+
+    const modifier = function(input) {
+      return [input + 1];
+    };
+
+    const ProxifiedA = proxifyClass(A, modifier);
+
+    const proxifiedInstance = new ProxifiedA(2);
+    expect(proxifiedInstance.input).toEqual(2);
+
+    proxifiedInstance.inputModifier(3); // 3 + 1 = 4
+    expect(proxifiedInstance.input).toEqual(4);
   });
 });
