@@ -7,19 +7,34 @@ Simple library to modify method arguments before calling real method implementat
 
 # Motivation
 
-Library is a result of solving a problem of obtaining database objects by helpers, called in many different contexts.
+Library is a result of trying to solve a problem of obtaining database objects by helper methods that could be called in a different context (with different input types).
 
-Depending on the context, helper could be called with a DB entity or only Id of the entity.
+Depending on the context, helper was going to be called with a DB entity or only ID of the entity.
 
-In order to make sure that the helper always operated on the `Object` and not on the `String` and to not complicate helpers or the code, we came up with `ProxifyClass` idea.
+In order to make sure that the helper always operated on the `Object` and not on the `String` and to simplify the code of the helpers, we came up with `ProxifyClass` idea.
 
-`ProxifyClass` allowed for separating parameter modifications and method logic, so the methods can always obtain standardised arguments (in our case arguments were DB objects) and not worry about type or structure of the arguments - the arguments could contain the same data structures, thanks to proxifying.
+`ProxifyClass` allowed for separating parameter modifications and method logic, so the methods can always obtain standardised arguments (in our case arguments were DB objects) and not worry about type or structure of the arguments - the arguments had the same form from the method invocation perspective.
 
-# Browser support
+# Browser/NodeJS support
 
-The library works with up to 3 most recent versions of any major browser. NodeJS is supported as well (at least NodeJS 4.x is required);
+**IMPORTANT!**
 
-If Proxy object is available, it uses `handler.apply()` part of the Proxy. Otherwise, simple wrapping is performed, using `function.apply`.
+The library supports ES5 and ES6 separately, due to the differences in `class` implementation.
+
+By default, the version that is exported works with native ES6 classes (perfect for using with NodeJS).
+
+However, as the browser support for native classes is inconsistent, another version of the library is exposed - supporting ES5 - it could be found in the subdirectory of the library.
+
+To require ES5 version:
+
+```javascript
+
+ const proxifyClassES5 = require('proxify-class/es5');
+```
+
+For now, to keep the transpiling process as simple as possible, ES6 transform assumes compatibility with recent `NodeJS` whereas `ES5` version assumes compatibility with all recent browsers (using default `babel-preset-env` settings).
+
+If Proxy object is available, library uses `handler.apply()` method of the Proxy. Otherwise, simple wrapping is performed, using `function.apply`.
 
 # Methods
 
