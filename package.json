@@ -4,7 +4,7 @@
   "description": "Proxifies class methods or single function",
   "main": "lib/index.js",
   "scripts": {
-    "babel": "babel src -d lib --ignore *.test.js",
+    "build": "babel src -d lib --ignore *.test.js",
     "coverage": "jest --coverage",
     "codacy": "npm run coverage && cat ./coverage/lcov.info | codacy-coverage && rm -rf ./coverage",
     "lint": "eslint --fix src test",
