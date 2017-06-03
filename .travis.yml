@@ -14,8 +14,7 @@ script:
 - npm run codacy
 
 before_deploy:
-- npm run buildES5
-- npm run buildES6
+- npm run build
 
 deploy:
   provider: npm

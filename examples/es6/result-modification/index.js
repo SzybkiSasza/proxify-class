@@ -1,6 +1,6 @@
 /* eslint-disable no-invalid-this */
 
-const proxifyClass = require('../../../lib').proxifyClass;
+const proxifyClass = require('../../../es6').proxifyClass;
 
 /**
  * Test class for modifying callback results
