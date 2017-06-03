@@ -4,8 +4,8 @@
   "description": "Proxifies class methods or single function",
   "main": "lib/index.js",
   "scripts": {
-    "buildES6": "babel-cli src -d lib --ignore *.test.js",
-    "buildES5": "babel-cli src -d lib/es5 --ignore *.test.js --plugins=transform-runtime --presets=env",
+    "buildES6": "babel src -d lib --ignore *.test.js",
+    "buildES5": "babel src -d lib/es5 --ignore *.test.js --plugins=transform-runtime --presets=env",
     "coverage": "jest --coverage",
     "codacy": "npm run coverage && cat ./coverage/lcov.info | codacy-coverage && rm -rf ./coverage",
     "lint": "eslint --fix src test",

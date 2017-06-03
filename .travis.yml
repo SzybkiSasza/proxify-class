@@ -6,8 +6,8 @@ node_js:
 cache:
   yarn: true
 
-before_script:
-- npm i -g babel
+install:
+- npm i
 
 script:
 - npm run lint
