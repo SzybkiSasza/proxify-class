@@ -1,6 +1,6 @@
 /* eslint-disable no-invalid-this */
 
-const proxifyClass = require('../../../lib/es5').proxifyClass;
+const proxifyClass = require('../../../es5').proxifyClass;
 
 /**
  * Assigns console.log to the class instance as a default logger
