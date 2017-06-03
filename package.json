@@ -1,6 +1,6 @@
 {
   "name": "proxify-class",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Proxifies class methods or single function",
   "main": "es6/index.js",
   "scripts": {
