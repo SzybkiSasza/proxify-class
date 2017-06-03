@@ -1,5 +1,6 @@
 coverage
-lib
+es5
+es6
 node_modules
 npm-debug.log
 wip.js

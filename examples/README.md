@@ -19,7 +19,7 @@ Examples build for ES5 can be run in any browser environment supporting module l
 To run any example:
 
 1. `npm i` or `yarn`
-2. `npm run buildES5 && npm run build ES6`
+2. `npm run build`
 3. Go to the particular example directory: `examples/esX/example-name`
 4. Run the example:
   - NodeJS - run `node index`
